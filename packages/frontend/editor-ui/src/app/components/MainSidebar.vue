@@ -109,10 +109,7 @@ const mainMenuItems = computed<IMenuItem[]>(() => [
 		icon: 'package-open',
 		label: i18n.baseText('generic.templates'),
 		position: 'bottom',
-		available:
-			settingsStore.isTemplatesEnabled &&
-			templatesStore.hasCustomTemplatesHost &&
-			!isResourceCenterEnabled.value,
+		available: false,
 		route: { to: { name: VIEWS.TEMPLATES } },
 	},
 	{
@@ -121,10 +118,7 @@ const mainMenuItems = computed<IMenuItem[]>(() => [
 		icon: 'package-open',
 		label: i18n.baseText('generic.templates'),
 		position: 'bottom',
-		available:
-			settingsStore.isTemplatesEnabled &&
-			!templatesStore.hasCustomTemplatesHost &&
-			!isResourceCenterEnabled.value,
+		available: false,
 		link: {
 			href: templatesStore.websiteTemplateRepositoryURL,
 			target: '_blank',

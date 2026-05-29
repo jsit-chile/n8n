@@ -12,5 +12,10 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true
 	},
-	"include": ["src/**/*.ts", "test/**/*.ts", "integration-tests/**/*.ts"]
+	"include": [
+		"src/**/*.ts",
+		"test/**/*.ts",
+		"integration-tests/**/*.ts",
+		"../../../node_modules/jest-expect-message/types/index.d.ts"
+	]
 }

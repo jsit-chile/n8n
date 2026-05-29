@@ -83,13 +83,7 @@ const isEnterprise = computed(
 const isTelemetryEnabled = computed((): boolean => {
 	return settingsStore.isTelemetryEnabled;
 });
-const showGitHubButton = computed(
-	() =>
-		!isEnterprise.value &&
-		!settingsStore.settings.inE2ETests &&
-		!githubButtonHidden.value &&
-		isTelemetryEnabled.value,
-);
+const showGitHubButton = null; // GitHub has requested to remove the button for now, but we want to keep the code in place to easily re-enable it in the future if desired
 
 const parentFolderForBreadcrumbs = computed<FolderShortInfo | undefined>(() => {
 	const folder = workflowDocumentStore?.value?.parentFolder;

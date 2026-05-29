@@ -11,6 +11,7 @@ import { N8nScrollArea } from '@n8n/design-system';
 import BottomMenu from '@/app/components/BottomMenu.vue';
 import MainSidebarHeader from '@/app/components/MainSidebarHeader.vue';
 import ChatSidebarContent from '@/features/ai/chatHub/components/ChatSidebarContent.vue';
+import ProjectNavigation from '@/features/collaboration/projects/components/ProjectNavigation.vue';
 
 const i18n = useI18n();
 const router = useRouter();
@@ -91,6 +92,7 @@ const onLogout = () => {
 		/>
 		<N8nScrollArea as-child>
 			<div :class="$style.scrollArea">
+				<ProjectNavigation :collapsed="isCollapsed" />
 				<ChatSidebarContent :is-collapsed="isCollapsed" />
 				<BottomMenu :items="visibleMenuItems" :is-collapsed="isCollapsed" @logout="onLogout" />
 			</div>

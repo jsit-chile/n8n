@@ -651,14 +651,14 @@
 @mixin theme-dark {
 	@include tokens-legacy.theme-dark-legacy;
 
-	--background--brand: var(--color--orange-500);
-	--background--brand--hover: var(--color--orange-600);
-	--background--brand--active: var(--color--orange-700);
-	--background--brand--focus: var(--color--orange-400);
+	--background--brand: var(--color--jsit-gold);
+	--background--brand--hover: var(--color--jsit-gold-dark);
+	--background--brand--active: var(--color--jsit-gold-darker);
+	--background--brand--focus: var(--color--jsit-gold);
 	--background--brand--disabled: var(--color--neutral-800);
 
-	--background--surface: var(--color--neutral-900);
-	--background--subtle: var(--color--neutral-800);
+	--background--surface: var(--color--jsit-surface);
+	--background--subtle: var(--color--jsit-deep);
 	--background--hover: var(--color--white-alpha-100);
 	--background--active: var(--color--white-alpha-150);
 	--background--focus: var(--color--white-alpha-150);
@@ -675,9 +675,9 @@
 	--icon-color: var(--color--neutral-300);
 	--icon-color--strong: var(--color--neutral-white);
 
-	--text-color: var(--color--neutral-white);
-	--text-color--subtle: var(--color--neutral-200);
-	--text-color--subtler: var(--color--neutral-400);
+	--text-color: var(--color--jsit-text);
+	--text-color--subtle: var(--color--jsit-text-muted);
+	--text-color--subtler: var(--color--neutral-500);
 	--text-color--disabled: var(--color--neutral-600);
 
 	--background--success: var(--color--green-950);
@@ -695,10 +695,10 @@
 	--text-color--danger: var(--color--red-50);
 	--icon-color--danger: var(--color--red-50);
 
-	--background--info: var(--color--blue-900);
-	--border-color--info: var(--color--blue-800);
-	--text-color--info: var(--color--blue-50);
-	--icon-color--info: var(--color--blue-50);
+	--background--info: var(--color--jsit-blue-alpha-100);
+	--border-color--info: var(--color--jsit-blue);
+	--text-color--info: var(--color--jsit-blue);
+	--icon-color--info: var(--color--jsit-blue);
 
 	--background--inverse: var(--color--neutral-white);
 	--border-color--inverse: var(--color--neutral-200);
@@ -753,20 +753,20 @@
 	--lm-chat--user--border-color: var(--color--green-600);
 
 	// Canvas
-	--canvas--color--background: var(--color--neutral-950);
-	--canvas--dot--color: var(--color--neutral-700);
-	--canvas--read-only-line--color: var(--color--neutral-900);
+	--canvas--color--background: var(--color--jsit-deep);
+	--canvas--dot--color: var(--color--jsit-surface-raised);
+	--canvas--read-only-line--color: var(--color--jsit-surface);
 	--canvas--color--selected: var(--color--white-alpha-400);
 	--canvas--color--selected-transparent: var(--canvas--color--selected);
-	--canvas--label--color: var(--color--neutral-500);
+	--canvas--label--color: var(--color--jsit-text-muted);
 	--canvas--label--color--background: oklch(from var(--canvas--color--background) l c h / 0.85);
 
 	// Nodes
-	--node--color--background: var(--color--neutral-850);
-	--node--color--background--executing: var(--color--neutral-700);
-	--node--color--background--executing-1: var(--color--neutral-700);
-	--node--border-color--pinned: var(--color--purple-500);
-	--node--type-main--color: var(--color--neutral-400);
+	--node--color--background: var(--color--jsit-surface);
+	--node--color--background--executing: var(--color--jsit-surface-raised);
+	--node--color--background--executing-1: var(--color--jsit-surface-raised);
+	--node--border-color--pinned: var(--color--jsit-blue);
+	--node--type-main--color: var(--color--jsit-text-muted);
 
 	// Sticky
 	--sticky--color--background: var(--color--yellow-900);
@@ -885,10 +885,15 @@
 	--variables-usage--syntax--color--background: var(--color--green-alpha-200);
 
 	// Button primary
-	--button--outline-color--primary--focus: var(--color--orange-alpha-300);
-	--button--color--text--primary--disabled: var(--color--white-alpha-500);
+	--button--color--text--primary: var(--color--jsit-deep);
+	--button--border-color--primary: var(--color--jsit-gold);
+	--button--color--background--primary: var(--color--jsit-gold);
+	--button--border-color--primary--hover-active: var(--color--jsit-gold-dark);
+	--button--color--background--primary--hover-active-focus: var(--color--jsit-gold-dark);
+	--button--outline-color--primary--focus: var(--color--jsit-gold-alpha-300);
+	--button--color--text--primary--disabled: rgba(13, 17, 23, 0.4);
 	--button--border-color--primary--disabled: transparent;
-	--button--color--background--primary--disabled: var(--color--orange-alpha-500);
+	--button--color--background--primary--disabled: var(--color--jsit-gold-alpha-200);
 
 	// Button secondary
 	--button--color--text--secondary: var(--color--neutral-150);
@@ -939,17 +944,15 @@
 
 	// Node Creator Button
 	--node-creator--button--color--text: var(--button--color--text--secondary);
-	--node-creator--button--color--text--hover: var(
-		--button--color--text--secondary--hover-active-focus
-	);
-	--node-creator--button--border-color--hover: var(--color--orange-500);
-	--node-creator--button--color--background: var(--color--orange-alpha-100);
+	--node-creator--button--color--text--hover: var(--color--jsit-gold);
+	--node-creator--button--border-color--hover: var(--color--jsit-gold);
+	--node-creator--button--color--background: var(--color--jsit-blue-alpha-100);
 
 	// Table
-	--table--header--color--background: var(--color--neutral-850);
-	--table--row--color--background: var(--color--neutral-950);
-	--table--row--color--background--even: var(--color--neutral-900);
-	--table--row--color--background--hover: var(--color--neutral-850);
+	--table--header--color--background: var(--color--jsit-surface);
+	--table--row--color--background: var(--color--jsit-deep);
+	--table--row--color--background--even: var(--color--jsit-surface);
+	--table--row--color--background--hover: var(--color--jsit-surface-raised);
 	--table--row--color--background--highlight: var(--color--warning--tint-1);
 
 	// Notification
@@ -997,7 +1000,7 @@
 	--callout--color--text--secondary: var(--color--neutral-white);
 
 	// Dialogs and overlays
-	--dialog--color--background: var(--color--neutral-900);
+	--dialog--color--background: var(--color--jsit-surface);
 	--dialog--overlay--color--background: var(--color--slate-alpha-700);
 	--dialog--overlay--color--background--dark: var(--color--black-alpha-600);
 
@@ -1224,11 +1227,11 @@
 	--link--color--secondary--hover: var(--color--purple-500);
 	// Params
 	--icon--color: var(--color--text--tint-1);
-	--icon--color--hover: var(--color--orange-500);
+	--icon--color--hover: var(--color--jsit-gold);
 
-	--menu--color--background: var(--color--neutral-900);
-	--menu--color--background--hover: var(--color--neutral-700);
-	--menu--color--background--active: var(--color--neutral-700);
+	--menu--color--background: var(--color--jsit-surface);
+	--menu--color--background--hover: var(--color--jsit-surface-raised);
+	--menu--color--background--active: var(--color--jsit-surface-raised);
 
 	/* Ag Grid */
 	--grid--row--color--background--selected: var(--color--purple-900);
@@ -1261,5 +1264,50 @@ body:not([data-theme]) {
 @media (prefers-color-scheme: dark) {
 	body:not([data-theme]) {
 		@include theme-dark;
+	}
+}
+
+/* Smooth theme transitions */
+@media (prefers-reduced-motion: no-preference) {
+	body {
+		transition:
+			background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Target structural UI elements for smooth recolor on theme switch */
+	header,
+	nav,
+	aside,
+	main,
+	footer,
+	section,
+	article,
+	[class*='card'],
+	[class*='panel'],
+	[class*='sidebar'],
+	[class*='toolbar'],
+	[class*='modal'],
+	[class*='dialog'],
+	[class*='dropdown'],
+	[class*='menu'],
+	[class*='popover'],
+	[class*='tooltip'],
+	[class*='table'],
+	[class*='button'],
+	[class*='input'],
+	[class*='select'],
+	[class*='badge'],
+	[class*='tag'],
+	[class*='node'],
+	[class*='canvas'],
+	svg {
+		transition:
+			background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+			border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+			color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+			fill 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+			stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+			box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 }

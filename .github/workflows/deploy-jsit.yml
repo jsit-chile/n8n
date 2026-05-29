@@ -1,0 +1,81 @@
+name: Deploy JSIT Workflows
+
+# Builds the customized n8n image from this fork and publishes it to GHCR.
+# Railway deploys the published image (see railway.json / Railway dashboard).
+#
+# Day-to-day flow: push to master -> this workflow builds & pushes the image
+# -> Railway redeploys (auto via registry watch, or manual "Redeploy").
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-jsit-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '24.15.0'
+  IMAGE: ghcr.io/${{ github.repository_owner }}/jsit-workflows
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # The monorepo + docker build is disk-hungry; reclaim space on the runner.
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force || true
+          df -h
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Enable corepack (pnpm)
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Produces the local image `n8nio/n8n:local` loaded into the daemon.
+      # (scripts/build-n8n.mjs generates ./compiled, scripts/dockerize-n8n.mjs builds it.)
+      - name: Build Docker image
+        run: pnpm build:docker
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tag and push image
+        run: |
+          docker tag n8nio/n8n:local "${IMAGE}:latest"
+          docker tag n8nio/n8n:local "${IMAGE}:${GITHUB_SHA}"
+          docker push "${IMAGE}:latest"
+          docker push "${IMAGE}:${GITHUB_SHA}"
+
+      # Optional: trigger a Railway redeploy automatically.
+      # Set the RAILWAY_TOKEN secret and RAILWAY_SERVICE_ID variable to enable;
+      # without them this step is a no-op (Railway can also watch the registry).
+      - name: Trigger Railway redeploy
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE_ID: ${{ vars.RAILWAY_SERVICE_ID }}
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "RAILWAY_TOKEN not set - skipping redeploy (configure Railway to watch the registry or redeploy manually)."
+            exit 0
+          fi
+          npx -y @railway/cli redeploy --service "$RAILWAY_SERVICE_ID" --yes

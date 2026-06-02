@@ -93,6 +93,7 @@ const {
 						:class="$style.readOnlyEnvironmentIcon"
 					/>
 				</N8nTooltip>
+				<span :class="$style.workflowsTitle">Workflows</span>
 			</N8nLogo>
 		</RouterLink>
 		<N8nNavigationDropdown
@@ -201,6 +202,15 @@ const {
 </template>
 
 <style lang="scss" module>
+.workflowsTitle {
+	font-family: 'Pacifico', cursive;
+	font-size: 18px;
+	line-height: 1;
+	color: var(--color--primary);
+	margin-left: var(--spacing--2xs);
+	white-space: nowrap;
+}
+
 .header {
 	display: flex;
 	align-items: center;
@@ -215,6 +225,12 @@ const {
 		margin-right: auto;
 	}
 
+	// Action buttons (add / search / collapse) keep their size and stay anchored
+	// to the right; they must never be pushed or overlapped by the logo block.
+	> *:not(.logo) {
+		flex-shrink: 0;
+	}
+
 	&.collapsed {
 		flex-direction: column;
 		border-bottom: var(--border);
@@ -223,6 +239,17 @@ const {
 
 .logo {
 	margin-right: auto;
+	// Yield space and clip the title instead of overflowing onto the buttons
+	// when the sidebar is too narrow to fit everything.
+	min-width: 0;
+	overflow: hidden;
+
+	// Anchor the logo content left so any clipping trims the title's tail,
+	// never the logo icon (the inner container centers its content by default).
+	:deep([data-test-id='n8n-logo']) {
+		justify-content: flex-start;
+		max-width: 100%;
+	}
 }
 
 .readOnlyEnvironmentIcon {

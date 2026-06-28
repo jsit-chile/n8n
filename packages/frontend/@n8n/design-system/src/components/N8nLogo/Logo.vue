@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFavicon } from '@vueuse/core';
-import { computed, onMounted, useCssModule, useTemplateRef } from 'vue';
+import { computed, onMounted, useCssModule } from 'vue';
 
 import LogoIcon from './logo-icon.svg';
 import LogoText from './logo-text.svg';
@@ -19,7 +19,10 @@ const props = defineProps<
 	}
 >();
 
-const { size, releaseChannel } = props;
+const { size } = props;
+
+// Served from editor-ui's public/ folder at runtime (not bundled by the design system)
+const brandLogoSrc = '/logo-jworkflows.png';
 
 const showLogoText = computed(() => {
 	if (size === 'large') return true;
@@ -38,28 +41,19 @@ const containerClasses = computed(() => {
 	];
 });
 
-const svg = useTemplateRef<{ $el: Element }>('logo');
 onMounted(() => {
-	if (!releaseChannel || releaseChannel === 'stable' || !('createObjectURL' in URL)) {
-		return;
-	}
-
-	const logoEl = svg.value!.$el;
-
-	// Change the logo fill color inline, so that favicon can also use it
-	const logoColor = releaseChannel === 'dev' ? '#838383' : '#E9984B';
-	logoEl.querySelector('path')?.setAttribute('fill', logoColor);
-
-	// Reuse the SVG as favicon
-	const blob = new Blob([logoEl.outerHTML], { type: 'image/svg+xml' });
-	useFavicon(URL.createObjectURL(blob));
+	// Always use the jWorkflows favicon regardless of release channel
+	useFavicon('/favicon.png');
 });
 </script>
 
 <template>
 	<div :class="containerClasses" data-test-id="n8n-logo">
-		<LogoIcon ref="logo" :class="$style.logo" />
-		<LogoText v-if="showLogoText" :class="$style.logoText" />
+		<img v-if="size === 'large'" :class="$style.brandLogo" :src="brandLogoSrc" alt="jWorkflows" />
+		<template v-else>
+			<LogoIcon :class="$style.logo" />
+			<LogoText v-if="showLogoText" :class="$style.logoText" />
+		</template>
 		<slot />
 	</div>
 </template>
@@ -79,18 +73,13 @@ onMounted(() => {
 }
 
 .large {
-	transform: scale(2);
 	margin-bottom: var(--spacing--xl);
+}
 
-	.logo,
-	.logoText {
-		transform: scale(1.3) translateY(-2px);
-	}
-
-	.logoText {
-		margin-left: var(--spacing--xs);
-		margin-right: var(--spacing--3xs);
-	}
+.brandLogo {
+	width: 220px;
+	height: auto;
+	max-width: 100%;
 }
 
 .sidebarExpanded .logo {

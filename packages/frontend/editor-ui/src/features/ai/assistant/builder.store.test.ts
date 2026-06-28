@@ -3712,7 +3712,7 @@ describe('AI Builder store', () => {
 				'aiAssistant.builder.notification.title',
 				expect.objectContaining({
 					body: 'aiAssistant.builder.notification.body',
-					icon: '/favicon.ico',
+					icon: '/favicon.png',
 					requireInteraction: false,
 				}),
 			);

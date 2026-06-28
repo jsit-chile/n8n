@@ -560,7 +560,7 @@ export const useBuilderStore = defineStore(STORES.BUILDER, () => {
 			body: locale.baseText(bodyKey, {
 				interpolate: { workflowName },
 			}),
-			icon: '/favicon.ico',
+			icon: '/favicon.png',
 			tag: `workflow-build-${workflowsStore.workflowId}`,
 			requireInteraction: false,
 		});

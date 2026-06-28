@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Logo > renders the logo for authView location 1`] = `"<div class="logoContainer large" data-test-id="n8n-logo"><img class="brandLogo" src="/logo-jworkflows.png" alt="jWorkflows"></div>"`;
+exports[`Logo > renders the logo for authView location 1`] = `"<div class="logoContainer large" data-test-id="n8n-logo"><img class="brandLogo" src="/assets/logo-jworkflows.png" alt="jWorkflows"></div>"`;
 
 exports[`Logo > renders the logo for sidebar location when sidebar is collapsed 1`] = `
 "<div class="logoContainer sidebar sidebarCollapsed" data-test-id="n8n-logo"><svg xmlns="http://www.w3.org/2000/svg" width="50" height="30" viewBox="0 0 50 30" class="logo">

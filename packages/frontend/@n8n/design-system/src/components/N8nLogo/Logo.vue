@@ -21,8 +21,10 @@ const props = defineProps<
 
 const { size } = props;
 
-// Served from editor-ui's public/ folder at runtime (not bundled by the design system)
-const brandLogoSrc = '/logo-jworkflows.png';
+// Served from editor-ui's public/assets/ at runtime. Must live under /assets/
+// because n8n's server only serves that path as static files (everything else
+// falls through to the SPA index.html via the history-api handler).
+const brandLogoSrc = '/assets/logo-jworkflows.png';
 
 const showLogoText = computed(() => {
 	if (size === 'large') return true;
@@ -43,7 +45,7 @@ const containerClasses = computed(() => {
 
 onMounted(() => {
 	// Always use the jWorkflows favicon regardless of release channel
-	useFavicon('/favicon.png');
+	useFavicon('/assets/favicon.png');
 });
 </script>
 

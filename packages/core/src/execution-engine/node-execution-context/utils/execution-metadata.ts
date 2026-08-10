@@ -4,6 +4,8 @@ import { LoggerProxy as Logger } from 'n8n-workflow';
 import { InvalidExecutionMetadataError } from '@/errors/invalid-execution-metadata.error';
 
 export const KV_LIMIT = 10;
+export const MAX_KEY_LENGTH = 50;
+export const MAX_VALUE_LENGTH = 512;
 
 export function setWorkflowExecutionMetadata(
 	executionData: IRunExecutionData,
@@ -34,13 +36,19 @@ export function setWorkflowExecutionMetadata(
 		throw new InvalidExecutionMetadataError('value', key);
 	}
 	const val = String(value);
-	if (key.length > 50) {
-		Logger.error('Custom data key over 50 characters long. Truncating to 50 characters.');
+	// Only log when data is actually lost, and name the key so the offending
+	// workflow can be found without grepping every execution.
+	if (key.length > MAX_KEY_LENGTH) {
+		Logger.warn(
+			`Custom data key over ${MAX_KEY_LENGTH} characters long. Truncating to ${MAX_KEY_LENGTH} characters. (key "${key}")`,
+		);
 	}
-	if (val.length > 255) {
-		Logger.error('Custom data value over 512 characters long. Truncating to 512 characters.');
+	if (val.length > MAX_VALUE_LENGTH) {
+		Logger.warn(
+			`Custom data value over ${MAX_VALUE_LENGTH} characters long. Truncating to ${MAX_VALUE_LENGTH} characters. (key "${key}")`,
+		);
 	}
-	executionData.resultData.metadata[key.slice(0, 50)] = val.slice(0, 512);
+	executionData.resultData.metadata[key.slice(0, MAX_KEY_LENGTH)] = val.slice(0, MAX_VALUE_LENGTH);
 }
 
 export function setAllWorkflowExecutionMetadata(

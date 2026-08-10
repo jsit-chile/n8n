@@ -1,4 +1,8 @@
-import { createRunExecutionData, type IRunExecutionData } from 'n8n-workflow';
+import {
+	createRunExecutionData,
+	LoggerProxy as Logger,
+	type IRunExecutionData,
+} from 'n8n-workflow';
 
 import { InvalidExecutionMetadataError } from '@/errors/invalid-execution-metadata.error';
 
@@ -6,6 +10,7 @@ import {
 	setWorkflowExecutionMetadata,
 	setAllWorkflowExecutionMetadata,
 	KV_LIMIT,
+	MAX_VALUE_LENGTH,
 	getWorkflowExecutionMetadata,
 	getAllWorkflowExecutionMetadata,
 } from '../execution-metadata';
@@ -165,12 +170,38 @@ describe('Execution Metadata functions', () => {
 	test('setWorkflowExecutionMetadata should truncate long values', () => {
 		const { metadata, executionData } = createExecutionDataWithMetadata();
 
-		const longValue = 'a'.repeat(513);
+		const longValue = 'a'.repeat(MAX_VALUE_LENGTH + 1);
 
 		setWorkflowExecutionMetadata(executionData, 'test1', longValue);
 
 		expect(metadata).toEqual({
-			test1: longValue.slice(0, 512),
+			test1: longValue.slice(0, MAX_VALUE_LENGTH),
+		});
+	});
+
+	describe('value length logging', () => {
+		const warnSpy = jest.fn();
+
+		beforeEach(() => {
+			warnSpy.mockClear();
+			Logger.init({ warn: warnSpy } as never);
+		});
+
+		test('does not warn for values within the limit', () => {
+			const { executionData } = createExecutionDataWithMetadata();
+
+			setWorkflowExecutionMetadata(executionData, 'test1', 'a'.repeat(MAX_VALUE_LENGTH));
+
+			expect(warnSpy).not.toHaveBeenCalled();
+		});
+
+		test('warns with the key name when the value is truncated', () => {
+			const { executionData } = createExecutionDataWithMetadata();
+
+			setWorkflowExecutionMetadata(executionData, 'test1', 'a'.repeat(MAX_VALUE_LENGTH + 1));
+
+			expect(warnSpy).toHaveBeenCalledTimes(1);
+			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('test1'), undefined);
 		});
 	});
 });
